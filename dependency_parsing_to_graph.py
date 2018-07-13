@@ -9,9 +9,10 @@ import numpy as np
 from PIL import Image
 
 parser = CaboCha.Parser()
-value = ''
 
-def process(event):
+# 係り受け解析した後，有向グラフを出力
+def process(string):
+    value = string.widget.get()
     tree =  parser.parse(value)
     cabocha_data = tree.toString(CaboCha.FORMAT_LATTICE)
 
@@ -55,21 +56,21 @@ def process(event):
 if __name__ == '__main__':
     root = tk.Tk()
     root.title('係り受け解析器')
-    root.geometry("400x300")
+    root.geometry("400x100")
     
     frame = tk.Frame(root)
 
+    # ラベル1
+    label1 = tk.Label(text = '解析したい文を入力してください')
+    label1.pack()
+
+    # ラベル2
+    label2 = tk.Label(text = 'Enterキーで確定')
+    label2.pack()
+
     # エントリー
     sentence = tk.Entry(width=50)
-    sentence.insert(tk.END, '解析したい文を入力してください')
+    sentence.bind('<Return>', process)
     sentence.pack()
-
-    # 入力された文字列を取得
-    value = sentence.get()
-
-    # ボタン クリックでprocess関数を呼び出し
-    button = tk.Button(text = '解析', width = 50)
-    button.bind = ('<Button-1>', process)
-    button.pack()
 
     root.mainloop()
